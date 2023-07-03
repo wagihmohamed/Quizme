@@ -1,6 +1,7 @@
 import { buttonVariants } from "@/components/ui/button";
 import { NavSearch } from "@/components/ui/navSearch";
 import Link from "next/link";
+import { ModeToggle } from "./ModeToggle";
 
 export const NavBar = () => {
   return (
@@ -13,6 +14,7 @@ export const NavBar = () => {
           Quizme
         </Link>
         <div className="flex gap-6 items-center">
+          <ModeToggle />
           <NavSearch />
           <Link
             href="/sign-up"
