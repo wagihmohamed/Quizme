@@ -9,10 +9,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useSignUp } from "@/hooks/useSignUp";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { toast } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   username: z.string().min(2).max(50),
@@ -21,6 +24,17 @@ const formSchema = z.object({
 });
 
 export default function SignUp() {
+  const { push } = useRouter();
+  const { mutate: signup, isLoading } = useSignUp({
+    onSuccess: () => {
+      toast.success("Account created successfully, please sign in");
+      push("/sign-in");
+    },
+    onError: () => {
+      toast.error("Something went wrong");
+    },
+  });
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -31,7 +45,11 @@ export default function SignUp() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    signup({
+      email: values.email,
+      password: values.password,
+      name: values.username,
+    });
   }
 
   return (
@@ -80,8 +98,8 @@ export default function SignUp() {
               </FormItem>
             )}
           />
-          <Button size="lg" type="submit">
-            Sign up
+          <Button isLoading={isLoading} size="lg" type="submit">
+            Sign in
           </Button>
         </form>
         <div className="flex gap-2 mt-3">

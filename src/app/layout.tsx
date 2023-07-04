@@ -1,6 +1,9 @@
 import { ThemeProvider } from "@/providers/theme-provider";
 import "./globals.css";
 import { Inter } from "next/font/google";
+import { AuthProvider } from "@/providers/AuthProvider";
+import { ReactQueryProvider } from "@/providers/ReactQueryProvider";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,11 +18,28 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
+    <html suppressHydrationWarning={true} lang="en" className="dark">
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          {children}
-        </ThemeProvider>
+        <ReactQueryProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <AuthProvider>{children}</AuthProvider>
+            <Toaster
+              position="top-center"
+              reverseOrder={false}
+              gutter={8}
+              containerClassName=""
+              containerStyle={{}}
+              toastOptions={{
+                className: "",
+                duration: 2200,
+                style: {
+                  background: "primary",
+                  color: "text-primary",
+                },
+              }}
+            />
+          </ThemeProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   );

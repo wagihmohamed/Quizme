@@ -17,7 +17,7 @@ export const NavBar = () => {
           <ModeToggle />
           <NavSearch />
           <Link
-            href="/sign-up"
+            href="/sign-in"
             className={buttonVariants({
               className: "rounded-full",
             })}

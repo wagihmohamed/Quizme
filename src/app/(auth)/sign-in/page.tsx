@@ -14,29 +14,71 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import * as z from "zod";
+import GoogleLogo from "/public/google-logo.svg";
+import Image from "next/image";
+import { signIn, signOut, useSession } from "next-auth/react";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-hot-toast";
 
 const formSchema = z.object({
-  username: z.string().min(2).max(50),
+  email: z.string().email(),
   password: z.string().min(2).max(50),
 });
 
 export default function SignIn() {
   const { push } = useRouter();
+  const session = useSession();
+  console.log("session", session);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   });
 
+  const {
+    mutate: loginWithCredentials,
+    isLoading,
+    isError,
+    data,
+  } = useMutation({
+    mutationFn: async ({
+      email,
+      password,
+    }: {
+      email: string;
+      password: string;
+    }) => {
+      return await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+    },
+    onSuccess: (response) => {
+      if (response?.error) {
+        toast.error(response.error);
+      } else {
+        toast.success("Logged in successfully");
+        push("/dashboard");
+      }
+    },
+  });
+  console.log("data", data);
+  
+
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    push("/");
+    loginWithCredentials({
+      email: values.email,
+      password: values.password,
+    });
   }
 
   return (
     <div className="flex flex-col items-center justify-center h-screen py-2 px-14 text-center sm:px-6 lg:px-8">
+      {isError && <p className="text-red-500">Invalid credentials</p>}
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -44,12 +86,12 @@ export default function SignIn() {
         >
           <FormField
             control={form.control}
-            name="username"
+            name="email"
             render={({ field }) => (
               <FormItem className="text-left">
-                <FormLabel>Username</FormLabel>
+                <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="Username" {...field} />
+                  <Input placeholder="John@email.com" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -68,10 +110,27 @@ export default function SignIn() {
               </FormItem>
             )}
           />
-          <Button size="lg" type="submit">
+          <Button isLoading={isLoading} size="lg" type="submit">
             Sign in
           </Button>
         </form>
+        <Button
+          // onClick={() => signIn("google")}
+          onClick={() => signOut()}
+          className="mt-4"
+          size="lg"
+          type="submit"
+        >
+          <Image
+            className="mr-2"
+            src={GoogleLogo}
+            alt="Google Logo"
+            width={24}
+            height={24}
+            priority={false}
+          />
+          Sign in with Google
+        </Button>
         <div className="flex gap-2 mt-3">
           <p>Don&apos;t have an account? </p>
           <Link

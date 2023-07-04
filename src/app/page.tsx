@@ -18,18 +18,25 @@ export default function Home() {
         <Image
           src={LandingImage}
           alt="Landing Image"
+          priority
           className="mx-auto w-full h-[30rem]"
         />
         <div className="flex justify-center gap-10 items-center mt-10">
-          <Link className={buttonVariants({
-            size:'lg'
-          })} href="/quiz">
+          <Link
+            className={buttonVariants({
+              size: "lg",
+            })}
+            href="/quiz"
+          >
             Explore Quizes
           </Link>
-          <Link className={buttonVariants({
-            size:'lg',
-            variant:'destructive'
-          })} href="/create">
+          <Link
+            className={buttonVariants({
+              size: "lg",
+              variant: "destructive",
+            })}
+            href="/create"
+          >
             Create a Quiz
           </Link>
         </div>
