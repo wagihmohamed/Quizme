@@ -9,4 +9,5 @@ const QuizeSchema = new Schema({
   },
 });
 
-export const Quizes = mongoose.model("Quizes", QuizeSchema);
+export const Quizes =
+  mongoose.models.Quizes || mongoose.model("Quizes", QuizeSchema);

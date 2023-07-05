@@ -1,5 +1,4 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -7,8 +6,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+  Input,
+  Button,
+} from "@/components/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 import * as z from "zod";
 import GoogleLogo from "/public/google-logo.svg";
 import Image from "next/image";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 
@@ -67,7 +67,6 @@ export default function SignIn() {
     },
   });
   console.log("data", data);
-  
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     loginWithCredentials({
@@ -115,8 +114,7 @@ export default function SignIn() {
           </Button>
         </form>
         <Button
-          // onClick={() => signIn("google")}
-          onClick={() => signOut()}
+          onClick={() => signIn("google")}
           className="mt-4"
           size="lg"
           type="submit"

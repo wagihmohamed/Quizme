@@ -1,5 +1,4 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -7,8 +6,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+  Button,
+  Input,
+} from "@/components/ui";
 import { useSignUp } from "@/hooks/useSignUp";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";

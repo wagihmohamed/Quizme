@@ -1,8 +1,7 @@
-import { NavBar } from "@/components/ui/NavBar";
+import { NavBar, buttonVariants } from "@/components/ui";
 import Image from "next/image";
 import LandingImage from "/public/landing.svg";
 import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
 
 export default function Home() {
   return (
